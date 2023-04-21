@@ -1,0 +1,14 @@
+{
+	"skipTerminateQuickPick": false,
+	"skipSwitchToOutput": false,
+	"skipErrorMessage": true,
+	"commands": [
+		{
+			"text": "Run Server",
+			"color": "cyan",
+			"command": "npm start",
+			"alignment": "left",
+			"priority": -12
+		}
+	]
+}
