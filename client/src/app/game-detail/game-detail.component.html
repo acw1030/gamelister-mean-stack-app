@@ -1,0 +1,48 @@
+<div *ngIf="game" class="container mb-5 px-5 py-4 text-bg-light rounded">
+    <div class="row mb-4">
+        <button class="col-auto me-3 btn btn-secondary" (click)="goBack()">Return</button>
+        <h3 class="col-auto">{{game.name}}</h3>
+        <span class="col"></span>
+        <span class="col-auto">
+            <select class="form-select" [ngModel]="selectedList" (ngModelChange)="onChange($event)">
+                <option value="0">Add to List...</option>
+                <option *ngFor="let l of lists" [ngValue]="l._id">{{l.name}}</option>
+            </select>
+        </span>
+    </div>
+    <div class="row mb-4">
+        <div *ngIf="game.background_image;" class="col-6">
+            <img [src]="game.background_image" loading="lazy" style="display:block; width:100%; height:auto">
+        </div>
+        <div class="col-6">
+            <ul>
+                <li *ngIf="game.genres.length > 0">
+                    <span>Genres: </span>
+                    <span *ngFor="let g of game.genres; let i = index">{{g.name}}{{i === game.genres.length -1 ?
+                        '' : ',&nbsp;' }}</span>
+                </li>
+                <li *ngIf="game.platforms.length > 0">
+                    <span>Platforms: </span>
+                    <span *ngFor="let p of game.platforms; let i = index">{{p.platform.name}}{{i ===
+                        game.platforms.length -1 ?
+                        '' : ',&nbsp;' }}</span>
+                </li>
+                <li *ngIf="game.released">Release Date: {{game.released}}</li>
+                <li *ngIf="game.esrb_rating">Rating: {{game.esrb_rating.name}}</li>
+                <li *ngIf="game.metacritic">Metacritic Score: {{game.metacritic}}</li>
+                <li *ngIf="game.developers.length > 0">
+                    <span>Developers: </span>
+                    <span *ngFor="let d of game.developers; let i = index">{{d.name}}{{i === game.developers.length -1 ?
+                        '' : ',&nbsp;' }}</span>
+                </li>
+                <li *ngIf="game.publishers.length > 0">
+                    <span>Publishers: </span>
+                    <span *ngFor="let p of game.publishers; let i = index">{{p.name}}{{i === game.publishers.length -1 ?
+                        '' : ',&nbsp;' }}</span>
+                </li>
+                <li *ngIf="game.website">Website: <a [href]="game.website">{{game.website}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div [innerHTML]="game.description"></div>
+</div>

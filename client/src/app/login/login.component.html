@@ -1,0 +1,16 @@
+<form class="container mb-5 p-4 text-bg-light rounded" style="max-width: 30em;">
+    <h3 class="mb-4">Sign in</h3>
+    <div class="mb-3">
+        <label for="log-email" class="form-label">Email address</label>
+        <input type="email" class="form-control" name="log-email" [(ngModel)]="email">
+    </div>
+    <div class="mb-3">
+        <label for="log-pass" class="form-label">Password</label>
+        <input type="password" class="form-control" name="log-pass" [(ngModel)]="password">
+    </div>
+    <button type="button" class="btn btn-primary" (click)="login()">Sign in</button>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-auto"><a routerLink="/register">Create new account</a></div>
+    </div>
+</form>

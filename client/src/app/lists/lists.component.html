@@ -1,0 +1,18 @@
+<div class="container mb-5" style="max-width: 50em;">
+    <div class="row mb-5">
+        <h3 class="col text-light">Lists</h3>
+        <button type="button" class="btn btn-light col-auto me-4" (click)="createList()">Create list</button>
+    </div>
+
+    <h3 *ngIf="lists.length < 1" class="text-light">No lists found</h3>
+
+    <a *ngFor="let l of lists" class="container mb-3 row align-items-baseline p-3 text-bg-light rounded"
+        routerLink="/lists/{{l._id}}">
+        <h5 class="col">
+            {{l.name}}
+        </h5>
+        <div class="col-auto text-dark">
+            {{l.games.length}} games
+        </div>
+    </a>
+</div>

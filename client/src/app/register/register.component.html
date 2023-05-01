@@ -1,0 +1,24 @@
+<form class="container mb-5 p-4 text-bg-light rounded" style="max-width: 30em;">
+    <h3 class="mb-4">Sign up</h3>
+    <div class="mb-3">
+        <label for="reg-username" class="form-label">Username</label>
+        <input type="text" class="form-control" name="reg-username" [(ngModel)]="username">
+    </div>
+    <div class="mb-3">
+        <label for="reg-email" class="form-label">Email address</label>
+        <input type="email" class="form-control" name="reg-email" [(ngModel)]="email">
+    </div>
+    <div class="mb-3">
+        <label for="reg-pass1" class="form-label">Password</label>
+        <input type="password" class="form-control" name="reg-pass1" [(ngModel)]="password1">
+    </div>
+    <div class="mb-3">
+        <label for="reg-pass2" class="form-label">Confirm password</label>
+        <input type="password" class="form-control" name="reg-pass2" [(ngModel)]="password2">
+    </div>
+    <button type="button" class="btn btn-primary" (click)="register()">Sign up</button>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-auto"><a routerLink="/login">Sign in with existing account</a></div>
+    </div>
+</form>

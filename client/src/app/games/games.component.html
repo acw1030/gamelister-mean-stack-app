@@ -1,0 +1,74 @@
+<div class="row mb-5">
+    <div class="col input-group">
+        <label class="input-group-text">Sort by</label>
+        <select class="form-select" [(ngModel)]="sort">
+            <option value="1">Release date</option>
+            <option value="2">Metacritic score</option>
+            <option value="3">Release date (Ascending)</option>
+            <option value="4">Metacritic score (Ascending)</option>
+        </select>
+    </div>
+    <div class="col input-group">
+        <label class="input-group-text">Platform</label>
+        <select class="form-select" [(ngModel)]="platform">
+            <option value="1">All</option>
+            <option value="2">PC</option>
+            <option value="3">PlayStation</option>
+            <option value="4">Xbox</option>
+            <option value="5">Nintendo</option>
+        </select>
+    </div>
+    <div class="col input-group">
+        <input type="text" class="form-control" [(ngModel)]="search">
+        <button type="button" class="btn btn-primary"
+            (click)="page = 1; getGames(sort,platform,search,page);">Search</button>
+    </div>
+</div>
+
+<h3 *ngIf="result && result.count > 0; else noGames" class="mb-5 text-light">Showing {{(page - 1) * 20 + 1}}~{{(page -
+    1) * 20
+    + games.length}} of {{result.count}} results found</h3>
+<ng-template #noGames>
+    <h3 class="mb-5 text-light">0 results found</h3>
+</ng-template>
+
+<div class="mb-5 row row-cols-1 row-cols-xl-2 g-3">
+    <div *ngFor="let g of games" class="col">
+        <a class="container p-0 row text-bg-light rounded overflow-hidden" style="height:16em;"
+            routerLink="/games/{{g.slug}}">
+            <div class="col-6 p-0">
+                <img *ngIf="g.background_image; else noImage" [src]="g.background_image" loading="lazy"
+                    style="object-fit: cover; width:100%; height:16em;">
+                <ng-template #noImage>
+                    <img src="../../assets/dummy.jpg" loading="lazy"
+                        style="object-fit: cover; width:100%; height:16em;">
+                </ng-template>
+            </div>
+            <div class="col-6 p-4">
+                <h5>{{g.name}}</h5>
+                <div *ngIf="g.genres.length > 0">
+                    <span>Genres: </span>
+                    <span *ngFor="let gn of g.genres; let i = index">{{gn.name}}{{i === g.genres.length -1 ?
+                        '' : ',&nbsp;' }}</span>
+                </div>
+                <div *ngIf="g.platforms.length > 0">
+                    <span>Platforms: </span>
+                    <span *ngFor="let p of g.platforms; let i = index">{{p.platform.name}}{{i === g.platforms.length -1
+                        ?
+                        '' : ',&nbsp;' }}</span>
+                </div>
+                <div *ngIf="g.released">Release Date: {{g.released}}</div>
+                <div *ngIf="g.esrb_rating">Rating: {{g.esrb_rating.name}}</div>
+                <div *ngIf="g.metacritic">Metacritic Score: {{g.metacritic}}</div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div *ngIf="games.length > 0" class="row mb-5 mx-5">
+    <button *ngIf="result?.previous" type="button" class="col-auto btn btn-light" (click)="getPrev()">Previous
+        page</button>
+    <span class="col"></span>
+    <button *ngIf="result?.next" type="button" class="col-auto btn btn-light" (click)="getNext()">Next
+        page</button>
+</div>
