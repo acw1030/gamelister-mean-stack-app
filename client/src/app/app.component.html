@@ -3,26 +3,18 @@
       <a class="navbar-brand" routerLink="/">{{title}}</a>
       <ul class="navbar-nav me-auto">
         <li class="nav-item"><a class="nav-link" routerLink="/games">Games</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/lists">Lists</a></li>
-        <li *ngIf="authService.user" class="nav-item"><a class="nav-link" routerLink="/settings">Settings</a></li>
+        <li *ngIf="authService.getUser()" class="nav-item"><a class="nav-link" routerLink="/lists">Lists</a></li>
+        <li *ngIf="authService.getUser()" class="nav-item"><a class="nav-link" routerLink="/settings">Settings</a></li>
       </ul>
-      <span *ngIf="!authService.user; else hasUser">
+      <span *ngIf="!authService.getUser(); else hasUser">
         <button class="me-2 btn btn-outline-light" routerLink="/login">Login</button>
         <button class="btn btn-light" routerLink="/register">Register</button>
       </span>
       <ng-template #hasUser>
-        <span class="me-2">Welcome, {{authService.user?.username}}</span>
-        <button class="me-2 btn btn-outline-light" (click)="authService.logout()">Logout</button>
+        <span class="me-2 text-light">Welcome, {{authService.getUser()?.username}}</span>
+        <span *ngIf="authService.getUser()?.admin" class="me-2 text-warning">&lt;Admin&gt;</span>
+        <button class="me-2 btn btn-outline-light" (click)="logout()">Logout</button>
       </ng-template>
-      
-      
-      <!--<a class="nav-link" (click)="logout()" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-        aria-expanded="false">
-        <div>Welcome, {{this.user?.username}}</div>
-        <div style="font-size: .66em;" class="float-end">
-          <span>Administrator - </span><span style="text-decoration: underline;">Sign out</span>
-        </div>
-      </a>-->
   </div>
 </nav>
 <div class="container">

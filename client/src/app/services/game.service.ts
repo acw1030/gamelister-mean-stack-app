@@ -12,7 +12,7 @@ export class GameService {
 
   constructor(private http: HttpClient) { }
 
-  getGames(sort: number, platform: number, search: string, page: number): Observable<Result> {
+  getGames(sort: string, platform: string, search: string, page: number): Observable<Result> {
     return this.http.get<Result>(this.URL + `?sort=${sort}&platform=${platform}&search=${search}&page=${page}`);
   }
 

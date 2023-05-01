@@ -29,7 +29,7 @@ router.post('/register', async function (req, res) {
    try {
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-         res.status(400).send('email is already being used');
+         res.status(400).send('Email is already in use.');
       }
       else {
          let newUser = new User();
@@ -52,10 +52,11 @@ router.post('/register', async function (req, res) {
 });
 router.post('/login', async function (req, res) {
    try {
-      res.status(400).send('incorrect email or password');
       let user = await User.findOne({ email: req.body.email });
-      if (!user || hash(req.body.password) !== user.password) {
-         res.status(400).send('incorrect email or password');
+      delete user.password;
+      res.send(user);
+      /*if (!user || hash(req.body.password) !== user.password) {
+         res.status(400).send('Incorrect email or password.');
       }
       else {
          req.session.regenerate(() => {
@@ -63,16 +64,15 @@ router.post('/login', async function (req, res) {
             req.session.user = user;
             res.send(user);
          });
-      }
+      }*/
    }
    catch (err) {
       res.sendStatus(500);
    }
 });
 router.post('/logout', function (req, res) {
-   req.session.regenerate(() => {
-      res.redirect(200, "/");
-   });
+   req.session.regenerate();
+   res.send(200);
 });
 
 //USERS
@@ -297,7 +297,7 @@ router.get('/init', async function (req, res) {
       newUser.admin = true;
       newUser.locked = false;
       await newUser.save();
-      res.send('database initialized');
+      res.send('Database initialized');
    }
    catch (err) {
       res.sendStatus(500);

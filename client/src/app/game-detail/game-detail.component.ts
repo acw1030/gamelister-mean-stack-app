@@ -25,32 +25,34 @@ export class GameDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGame();
-    this.getLists();
   }
 
   onChange(newValue: string) {
     if (this.game) {
-      let g_name = this.game.name;
-      let g_slug = this.game.slug;
+      let game = this.game;
       this.listService.getList(newValue).subscribe(result => {
         let games = result.games;
-        games.push(g_slug);
+        games.push(game.slug);
         this.listService.updateList(result._id, result.name, games).subscribe(result => {
-          alert(`${g_name} added to ${result.name}`);
+          alert(`"${game.name}" added to ${result.name}.`);
+          this.selectedList = '0';
+          this.getLists(game);
+
         });
       });
     }
-    this.selectedList = '0';
   }
 
   getGame(): void {
     this.gameService.getGame(this.route.snapshot.paramMap.get('id')!)
-      .subscribe(game => this.game = game);
+      .subscribe(game => { this.game = game; this.getLists(game); });
   }
 
-  getLists(): void {
+  getLists(game: Game): void {
     this.lists = [];
-    this.listService.getLists().subscribe(result => { this.lists = result; });
+    this.listService.getLists().subscribe(result => {
+      this.lists = result.filter(l => l.games.indexOf(game.slug) === -1);
+    });
   }
 
   goBack(): void {

@@ -10,8 +10,7 @@
 
 <div class="mb-5 row row-cols-1 row-cols-xl-2 g-3">
     <div *ngFor="let g of games" class="col">
-        <a class="container p-0 row text-bg-light rounded overflow-hidden" style="height:16em;"
-            routerLink="/games/{{g.slug}}">
+        <div class="container p-0 row text-bg-light rounded overflow-hidden" style="height:16em;">
             <div class="col-6 p-0">
                 <img *ngIf="g.background_image; else noImage" [src]="g.background_image" loading="lazy"
                     style="object-fit: cover; width:100%; height:16em;">
@@ -21,7 +20,8 @@
                 </ng-template>
             </div>
             <div class="col-6 p-4">
-                <h5>{{g.name}}</h5>
+                <button type="button" class="btn-close float-end" (click)="removeGame(g.slug)"></button>
+                    <a routerLink="/games/{{g.slug}}"><h5>{{g.name}}</h5></a>
                 <div *ngIf="g.genres.length > 0">
                     <span>Genres: </span>
                     <span *ngFor="let gn of g.genres; let i = index">{{gn.name}}{{i === g.genres.length -1 ?
@@ -37,6 +37,6 @@
                 <div *ngIf="g.esrb_rating">Rating: {{g.esrb_rating.name}}</div>
                 <div *ngIf="g.metacritic">Metacritic Score: {{g.metacritic}}</div>
             </div>
-        </a>
+        </div>
     </div>
 </div>

@@ -1,5 +1,4 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, of } from 'rxjs';
 import { User } from '../models/user';
@@ -9,10 +8,9 @@ import { User } from '../models/user';
 })
 export class AuthService implements OnInit {
   private URL: string = '/api';
-  public user?: User = undefined;
+  private user?: User = undefined;
 
   constructor(
-    private router: Router,
     private http: HttpClient) {
     this.ngOnInit();
   }
@@ -45,24 +43,22 @@ export class AuthService implements OnInit {
     }
   }
 
+  getUser() {
+    return this.user;
+  }
+
   register(username: string, email: string, password: string): Observable<User> {
     return this.http.post<User>(this.URL + '/register', { username: username, email: email, password: password })
-      .pipe(tap({
-        next: u => { this.setUser(u); this.router.navigateByUrl('/'); },
-        error: e => { alert(e) }
-      }));
+      .pipe(tap(u => this.setUser(u)));
   }
 
   login(email: string, password: string): Observable<User> {
     return this.http.post<User>(this.URL + '/login', { email: email, password: password })
-      .pipe(tap({
-        next: u => { this.setUser(u); this.router.navigateByUrl('/'); },
-        error: e => { alert(e) }
-      }));
+      .pipe(tap(u => this.setUser(u)));
   }
 
   logout() {
     return this.http.post<User>(this.URL + '/logout', {})
-      .pipe(tap(() => { this.setUser(undefined); this.router.navigateByUrl('/'); }));
+      .pipe(tap(() => this.setUser(undefined)));
   }
 }
