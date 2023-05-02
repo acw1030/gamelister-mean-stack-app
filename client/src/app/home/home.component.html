@@ -1,2 +1,16 @@
-<p class="fs-1 fw-light text-light">GameLister</p>
-<p class="fs-5 fw-light text-light">Organize your gaming life for free today.</p>
+<div class="w-100">
+    <div class="mb-5 text-center">
+        <p class="fs-1 fw-light text-light">GameLister</p>
+        <p class="fs-5 fw-light text-light">Organize your gaming life with our free tool.</p>
+    </div>
+    <div class="mb-4 text-center">
+        <button class="btn btn-outline-light" routerLink="/games">Browse games</button>
+    </div>
+    <div class="mb-4 text-center">
+        <button *ngIf="authService.getUser(); else noUser" class="btn btn-outline-light" routerLink="/lists">Manage
+            custom lists</button>
+        <ng-template #noUser>
+            <button class="btn btn-outline-light" routerLink="/register">Create an account today!</button>
+        </ng-template>
+    </div>
+</div>

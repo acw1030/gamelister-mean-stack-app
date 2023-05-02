@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 import { ListService } from '../services/list.service';
 import { GameService } from '../services/game.service';
 import { List } from '../models/list';
 import { Game } from '../models/game';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-list-detail',
@@ -12,6 +14,7 @@ import { Game } from '../models/game';
   styleUrls: ['./list-detail.component.css']
 })
 export class ListDetailComponent implements OnInit {
+  user: User | undefined;
   list: List | undefined;
   games: Game[] = [];
 
@@ -19,11 +22,13 @@ export class ListDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private location: Location,
+    public authService: AuthService,
     private listService: ListService,
     private gameService: GameService) { }
 
   ngOnInit(): void {
     this.getList();
+    this.user = this.authService.getUser();
   }
 
   getList(): void {

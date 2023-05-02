@@ -3,7 +3,7 @@
         <button class="col-auto me-3 btn btn-secondary" (click)="goBack()">Return</button>
         <h3 class="col-auto">{{game.name}}</h3>
         <span class="col"></span>
-        <span class="col-auto">
+        <span *ngIf="authService.getUser()" class="col-auto">
             <select class="form-select" [(ngModel)]="selectedList" (ngModelChange)="onChange($event)">
                 <option value="0">Add to List...</option>
                 <option *ngFor="let l of lists" [ngValue]="l._id">{{l.name}}</option>

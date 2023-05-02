@@ -1,30 +1,106 @@
-<div class="container mb-5 p-4 text-bg-light rounded" style="max-width: 50em;">
-    <div class="mb-5 row align-items-baseline">
-        <h3 class="col-auto">Settings</h3>
-        <div class="col text-dark">ID: 34353</div>
-    </div>
+<div *ngIf="user && target && !user.admin" class="container mb-5 p-4 text-bg-light rounded" style="max-width: 30em;">
+    <h3 class="mb-5">Settings</h3>
     <div class="row">
         <div class="col">
             <h5>Username</h5>
-            <p>Admin</p>
+            <p>{{target.username}}</p>
         </div>
-        <div class="col-auto"><button class="btn btn-secondary">Change username</button></div>
+        <div class="col-auto"><button class="btn btn-secondary" (click)="changeUsername()">Change username</button>
+        </div>
     </div>
     <div class="row">
         <div class="col">
             <h5>Email</h5>
-            <p>admin@test.com</p>
+            <p>{{target.email}}</p>
         </div>
-        <div class="col-auto"><button class="btn btn-secondary">Change email</button></div>
+        <div class="col-auto"><button class="btn btn-secondary" (click)="changeEmail()">Change email</button></div>
     </div>
     <div class="mb-4 row">
         <div class="col">
             <h5>Password</h5>
         </div>
-        <div class="col-auto"><button class="btn btn-secondary">Reset password</button></div>
+        <div class="col-auto"><button class="btn btn-secondary" (click)="changePassword()">Reset password</button></div>
     </div>
-    <div class="row">
+    <div class="mb-4 row">
         <div class="col"></div>
-        <div class="col-auto"><a class="text-danger">Deactivate account</a></div>
+        <div class="col-auto"><a type="button" class="text-danger" (click)="deactivateSelf()">Deactivate account</a>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="user && target && user.admin" class="row align-items-baseline" style="height:50em;">
+    <div class="col row mb-5 p-4 text-bg-light rounded">
+        <h3 class="">Settings</h3>
+        <div class="mb-4 text-dark">ID: {{isYou() ? target._id + ' (You)' : target._id}}</div>
+        <div class="row">
+            <div class="col">
+                <h5>Username</h5>
+                <p>{{target.username}}</p>
+            </div>
+            <div class="col-auto"><button class="btn btn-secondary" (click)="changeUsername()">Change username</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h5>Email</h5>
+                <p>{{target.email}}</p>
+            </div>
+            <div class="col-auto"><button class="btn btn-secondary" (click)="changeEmail()">Change email</button></div>
+        </div>
+        <div class="mb-4 row">
+            <div class="col">
+                <h5>Password</h5>
+            </div>
+            <div class="col-auto"><button class="btn btn-secondary" (click)="changePassword()">Reset password</button>
+            </div>
+        </div>
+        <div *ngIf="isYou(); else isOther;" class="mb-4 row">
+            <div class="col"></div>
+            <div class="col-auto"><a type="button" class="text-danger" (click)="deadminSelf()">Remove admin status</a>
+            </div>
+            <div class="col-auto"><a type="button" class="text-danger" (click)="deactivateSelf()">Deactivate account</a>
+            </div>
+        </div>
+        <ng-template #isOther>
+            <div class="mb-4 row">
+                <div class="col"></div>
+                <div class="col-auto form-check">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="target.admin" (ngModelChange)="changeProps()" id="adminCheck">
+                    <label class="form-check-label" for="adminCheck">
+                        Administrator
+                    </label>
+                </div>
+                <div class="col-auto form-check">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="target.locked" (ngModelChange)="changeProps()" id="lockCheck">
+                    <label class="form-check-label" for="lockCheck">
+                        Deactivated
+                    </label>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <div class="col-auto" style="width: 5%;"></div>
+    <div class="col row mb-5 p-4 text-bg-light rounded overflow-auto" style="max-height: 50em;">
+        <div class="px-5 pb-4 input-group">
+            <input type="text" class="form-control" [(ngModel)]="usersFilter">
+            <button type="button" class="btn btn-primary" (click)="searchUsers()">Search</button>
+        </div>
+        <h5 class="pb-4 ">Found {{users.length}} user{{users.length == 1 ? '' : 's'}}</h5>
+        <table class="table mb-4">
+            <thead>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Locked</th>
+                <th></th>
+            </thead>
+            <tr *ngFor="let u of users">
+                <td>{{u.username}}</td>
+                <td>{{u.email}}</td>
+                <td>{{u.admin}}</td>
+                <td>{{u.locked}}</td>
+                <td><a type="button" class="col-auto" (click)="setTarget(u._id)">Modify</a></td>
+            </tr>
+        </table>
     </div>
 </div>

@@ -16,7 +16,7 @@ function hash(str) {
 }
 
 //Authentication
-/*router.all('/lists*', (req, res) => {
+router.all(['/lists*', '/users*'], (req, res, next) => {
    if (req.session.user) {
       next();
    } else {
@@ -24,7 +24,7 @@ function hash(str) {
          res.sendStatus(403);
       });
    }
-});*/
+});
 router.post('/register', async function (req, res) {
    try {
       let user = await User.findOne({ email: req.body.email });
@@ -53,26 +53,28 @@ router.post('/register', async function (req, res) {
 router.post('/login', async function (req, res) {
    try {
       let user = await User.findOne({ email: req.body.email });
-      delete user.password;
-      res.send(user);
-      /*if (!user || hash(req.body.password) !== user.password) {
-         res.status(400).send('Incorrect email or password.');
-      }
-      else {
+      if (!user) {
+         res.status(400).send('A user with that email was not found.');
+      } else if (user.locked == true) {
+         res.status(400).send('Account has been deactivated.');
+      } else if (hash(req.body.password) == user.password) {
          req.session.regenerate(() => {
             delete user.password;
             req.session.user = user;
             res.send(user);
          });
-      }*/
+      } else {
+         res.status(400).send('Password is incorrect.');
+      }
    }
    catch (err) {
       res.sendStatus(500);
    }
 });
 router.post('/logout', function (req, res) {
-   req.session.regenerate();
-   res.send(200);
+   req.session.regenerate(() => {
+      res.sendStatus(200);
+   });
 });
 
 //USERS

@@ -1,4 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, of } from 'rxjs';
 import { User } from '../models/user';
@@ -11,16 +12,13 @@ export class AuthService implements OnInit {
   private user?: User = undefined;
 
   constructor(
+    private router: Router,
     private http: HttpClient) {
     this.ngOnInit();
   }
 
   ngOnInit() {
     this.getAuthenticatedUser().subscribe();
-  }
-
-  isAuthenticated() {
-    return this.user != undefined;
   }
 
   getAuthenticatedUser(): Observable<User> {
@@ -58,7 +56,8 @@ export class AuthService implements OnInit {
   }
 
   logout() {
-    return this.http.post<User>(this.URL + '/logout', {})
-      .pipe(tap(() => this.setUser(undefined)));
+    this.http.post<User>(this.URL + '/logout', {});
+    this.setUser(undefined);
+    this.router.navigateByUrl('/'); 
   }
 }

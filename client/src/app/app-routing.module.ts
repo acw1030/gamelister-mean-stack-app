@@ -19,7 +19,8 @@ const routes: Routes = [
   { path: 'games/:id', component: GameDetailComponent },
   { path: 'lists', component: ListsComponent },
   { path: 'lists/:id', component: ListDetailComponent },
-  { path: 'settings', component: SettingsComponent }
+  { path: 'settings', component: SettingsComponent },
+  { path: '**', component: HomeComponent }
 ];
 
 @NgModule({

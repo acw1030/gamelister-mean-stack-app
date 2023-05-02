@@ -13,7 +13,7 @@
       <ng-template #hasUser>
         <span class="me-2 text-light">Welcome, {{authService.getUser()?.username}}</span>
         <span *ngIf="authService.getUser()?.admin" class="me-2 text-warning">&lt;Admin&gt;</span>
-        <button class="me-2 btn btn-outline-light" (click)="logout()">Logout</button>
+        <button class="me-2 btn btn-outline-light" (click)="authService.logout()">Logout</button>
       </ng-template>
   </div>
 </nav>
